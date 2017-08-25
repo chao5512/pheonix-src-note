@@ -1,0 +1,15 @@
+http://blog.csdn.net/gaoshui87/article/details/52180414
+
+1.先是创建 PhoenixStatement 对象，调用到executeQuery方法
+
+2.然后调用到 ExecutableSelectStatement 中的compilePlan 生成了 QueryCompiler
+
+3.调用到了SingleTableColumnResolver 在里面进行相关的funtion table的元数据解释，到phoenix元数据表中进行查询
+
+4.然后 QueryCompiler 执行iterator 调用到 BaseQueryPlan.iterator，又调用到ScanPlan.newIterator 进行相关的scan 条件过滤
+
+5.然后创建了ParallelIterators 并行查询对象，对不同 的region进行并行查询，放在RoundRobinResultIterator对象当中
+
+6.又调用BaseResultIterators.getIterators对象当中进行htable.scan的对象创建查询
+
+7.最后初始化 tableResultItr.initScanner()方法，一个resultSet的iterator的对象就创建完成了
